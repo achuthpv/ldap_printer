@@ -20,7 +20,7 @@ def account(username):
     colLog = {'printer':0,'user':1,'jid':2,'timestamp':3,'page_no':5,'copies':6}
     colAcc = {'user':0,'pages':1,'timestamp':2,'max':3}
     logFile = "/var/log/cups/page_log"
-    accFile = "/home/achuth/scripts/account.csv"
+    accFile = "account.csv"
     #MAX = 200
     printers = ['PDF']
 

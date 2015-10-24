@@ -17,6 +17,7 @@ import easygui as eg
 def login ():
     rollno = None
     login_status = False
+    roll_no_file='roll_no_list.txt'
     try:
 
         l = ldap.init("ldap.iitb.ac.in")
@@ -69,6 +70,14 @@ def login ():
             employeeTypeList="ug,pg,dd,rs"
             if employeeType==None or employeeTypeList.find(employeeType) == -1:
                 raise ValueError('Invalid credentials', 'Not a Student Account')
+            mess_member=False
+            with open(roll_no_file, 'r') as mess_member_list:
+                for line in mess_member_list:
+                    if rollno in line:
+                        mess_member=True
+            if not mess_member:
+                raise ValueError('Invalid credentials', 'Not a Member of the Hostel Mess')
+
             password=fieldValues[1].strip()
             l.bind_s(dn,password)
             login_status= 'uid='+uid in l.whoami_s()
