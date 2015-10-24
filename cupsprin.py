@@ -32,7 +32,7 @@ def cupsprint(username,printername,lpfile):
         try:
             jobid = conn.printFile(printername,filename,filename,options)
         except cups.IPPError as (status, description):
-            eg.msgbox(title='IPP status is %d' % status, msg='Meaning: %s'% description)
+            eg.msgbox(title='IPP status is %d' % status, msg='Meaning: %s' % description)
 
         #account(username)
     return jobid

@@ -32,7 +32,7 @@ if login_status:
         if choice == 1:
             jobid=cupsprint(username,printername,lpfile)
         if choice == 2:
-            eg.msgbox(None,"Total number of pages printed = %s"% account(username))
+            eg.msgbox(None,"Total number of pages printed = %s" % account(username))
         choice = selection()
 
     conn = cups.Connection()
@@ -41,4 +41,4 @@ if login_status:
     #waiting for all the jobs of the current user to get finished
     while not conn.getJobs():
         time.sleep(1)
-    eg.msgbox(None,"Total number of pages printed = %s"% account(username))
+    eg.msgbox(None,"Total number of pages printed = %s" % account(username))
