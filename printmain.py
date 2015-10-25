@@ -35,10 +35,9 @@ if login_status:
         choice = selection()
 
     conn = cups.Connection()
-    conn.getJobs()
     # while conn.getJobs().get(jobid, None) is not None:
     # waiting for all the jobs of the current user to get finished
-    while not conn.getJobs():
+    while conn.getJobs():
         time.sleep(1)
     eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
 
