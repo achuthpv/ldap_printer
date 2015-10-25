@@ -12,76 +12,75 @@ and the  Account.csv file for a certain user.
 """
 import csv
 import time
-import sys
 
 
-    #username = sys.argv[1]
+# username = sys.argv[1]
 def account(username):
-    colLog = {'printer':0,'user':1,'jid':2,'timestamp':3,'page_no':5,'copies':6}
-    colAcc = {'user':0,'pages':1,'timestamp':2,'max':3}
-    logFile = "/var/log/cups/page_log"
-    accFile = "account.csv"
-    #MAX = 200
+    col_log = {'printer': 0, 'user': 1, 'jid': 2, 'timestamp': 3, 'page_no': 5, 'copies': 6}
+    col_acc = {'user': 0, 'pages': 1, 'timestamp': 2, 'max': 3}
+    log_file = "/var/log/cups/page_log"
+    acc_file = "account.csv"
+    # MAX = 200
     printers = ['PDF']
 
-    csvFile = open(logFile,'rb')
-    csvFile.seek(0)
-    reader = csv.reader(csvFile,delimiter=' ')
-    rowsLog = []
+    csv_file = open(log_file, 'rb')
+    csv_file.seek(0)
+    reader = csv.reader(csv_file, delimiter=' ')
+    rows_log = []
     for row in reader:
-        if row[colLog['printer']] in printers and row[colLog['page_no']] != 'total':
-            row[colLog['timestamp']]=row[colLog['timestamp']][1:]	#fix the opening brace of timestamp
-            rowsLog.append(row)
-    csvFile.close()
+        if row[col_log['printer']] in printers and row[col_log['page_no']] != 'total':
+            row[col_log['timestamp']] = row[col_log['timestamp']][1:]  # fix the opening brace of timestamp
+            rows_log.append(row)
+    csv_file.close()
 
-    csvFile = open(accFile,"a+b")
-    reader = csv.reader(csvFile)
-    rowsAcc = []
+    csv_file = open(acc_file, "a+b")
+    reader = csv.reader(csv_file)
+    rows_acc = []
 
     for row in reader:
-        rowsAcc.append(row)
+        rows_acc.append(row)
 
-    csvFile.close()
+    csv_file.close()
 
-    #add new people
+    # add new people
     users = {}
-    for row in rowsLog:
-        users[row[colLog['user']]]=0;
+    for row in rows_log:
+        users[row[col_log['user']]] = 0
 
-    for row in rowsAcc:
+    for row in rows_acc:
         try:
-            users[row[colAcc['user']]] = users[row[colAcc['user']]] + 1
-        except:
+            users[row[col_acc['user']]] += 1
+        except (IndexError, TypeError, KeyError):
             pass
 
     for key in users.keys():
         if users[key] == 0:
-            rowsAcc.append([key,0,1])	#name,pages,timestamp
+            rows_acc.append([key, 0, 1])  # name,pages,timestamp
 
-    #compare and update
+    # compare and update
     pattern = '%d/%b/%Y:%H:%M:%S'
-    total_pages=0
-    for rowa in rowsAcc:
-        user = rowa[colAcc['user']]
-        latest = (rowa[colAcc['timestamp']] == 1) and 1 or time.mktime(time.strptime(rowa[colAcc['timestamp']],pattern))
-        validRows = filter(lambda x:x[colLog['user']]==user and (latest == 1 or latest < time.mktime(time.strptime(x[colLog['timestamp']],pattern))),rowsLog)
-        if len(validRows) > 0:
-            rowa[colAcc['timestamp']] = validRows[-1][colLog['timestamp']]
-            prints = sum(map(lambda y:int(y[colLog['copies']]),validRows))
-            rowa[colAcc['pages']] = int(rowa[colAcc['pages']])+prints
-            total_pages=rowa[colAcc['pages']]
-    #warn
-    row = filter(lambda x:x[colAcc['user']]==username,rowsAcc)
+    for rowa in rows_acc:
+        user = rowa[col_acc['user']]
+        latest = (rowa[col_acc['timestamp']] == 1) and 1 or time.mktime(
+            time.strptime(rowa[col_acc['timestamp']], pattern))
+        valid_rows = filter(lambda x: x[col_log['user']] == user and (
+            latest == 1 or latest < time.mktime(time.strptime(x[col_log['timestamp']], pattern))), rows_log)
+        if len(valid_rows) > 0:
+            rowa[col_acc['timestamp']] = valid_rows[-1][col_log['timestamp']]
+            prints = sum(map(lambda y: int(y[col_log['copies']]), valid_rows))
+            rowa[col_acc['pages']] = int(rowa[col_acc['pages']]) + prints
+    # warn
+    row = filter(lambda x: x[col_acc['user']] == username, rows_acc)
 
     if len(row) == 0:
-        total_pages=0
+        total_pages = 0
     else:
-        total_pages=row[0][colAcc['pages']]
+        total_pages = row[0][col_acc['pages']]
 
-    #update accountfile
-    csvFile = open(accFile,"wb")
-    writer = csv.writer(csvFile)
-    for row in rowsAcc:
+    # update accountfile
+    csv_file = open(acc_file, "wb")
+    writer = csv.writer(csv_file)
+    for row in rows_acc:
         writer.writerow(row)
-    csvFile.close()
+    csv_file.close()
     return total_pages

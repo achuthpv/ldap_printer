@@ -1,3 +1,5 @@
 python-ldap
 easygui
 pycups
+selenium
+requests
