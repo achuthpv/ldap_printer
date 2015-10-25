@@ -13,81 +13,75 @@ login_status: boolean (True when login is successful, False otherwise)
 """
 import ldap
 import easygui as eg
-## first you must open a connection to the server
-def login ():
+
+
+def login():
     rollno = None
     login_status = False
-    roll_no_file='roll_no_list.txt'
-    try:
-
-        l = ldap.init("ldap.iitb.ac.in")
-        l.protocol_version = ldap.VERSION3
-        l.simple_bind(who="testconnection")
-    except ldap.LDAPError, e:
-        eg.msgbox(title="Cannot connect to LDAP server", msg="Please check the network connection")
-
-        return rollno, login_status
+    roll_no_file = 'roll_no_list.txt'
+    l = ldap.initialize('ldap://ldap.iitb.ac.in')
+    # try:
+    #
+    #     l = ldap.init("ldap.iitb.ac.in")
+    #     l.protocol_version = ldap.VERSION3
+    #     l.simple_bind(who="testconnection")
+    # except ldap.LDAPError:
+    #     eg.msgbox(title="Cannot connect to LDAP server", msg="Please check the network connection")
+    #     return rollno, login_status
     # handle error however you like
-    
-
-
 
     msg = "Enter LDAP Credentials"
     title = "Printer Login"
-    fieldNames = ["Username * ", "Password * "]
-    fieldValues = []  # we start with blanks for the values
-    fieldValues = eg.multpasswordbox(msg,title, fieldNames)
- 
-     # make sure that none of the fields was left blank
-    while 1:
-        if fieldValues == None:
-            return rollno, login_status
-        errmsg = ""
-        for i in range(len(fieldNames)):
-            if fieldValues[i].strip() == "":
-                errmsg = errmsg + ('"%s" is a mandatory field.' % fieldNames[i])
-        if errmsg == "": break # no problems found
-        fieldValues = eg.multpasswordbox(errmsg, title, fieldNames, fieldValues) 
+    field_names = ["Username * ", "Password * "]
 
-    baseDN = "dc=iitb,dc=ac,dc=in"
-    searchScope = ldap.SCOPE_SUBTREE
-    uid=fieldValues[0].strip()
-    searchFilter = '(uid='+uid+')'
-    dn=None
+    field_values = eg.multpasswordbox(msg, title, field_names)
+
+    # make sure that none of the fields was left blank
+    while True:
+        if not field_values:
+            return rollno, login_status
+        errmsg = ''
+        for i in range(len(field_names)):
+            if field_values[i].strip() == '':
+                errmsg += ('"%s" is a mandatory field.' % field_names[i])
+        if errmsg == '':
+            break  # no problems found
+        field_values = eg.multpasswordbox(errmsg, title, field_names, field_values)
+
+    uid = field_values[0].strip()
 
     try:
-        search_output= l.search_s(baseDN, searchScope, searchFilter)
+        search_output = l.search_s('dc=iitb,dc=ac,dc=in', ldap.SCOPE_SUBTREE, 'uid=%s' % uid)
         if not search_output:
-            raise ValueError("Invalid credentials",'Invalid Username')
-        for dne,entry in search_output:
-            dn=dne
-            err=None
+            raise ValueError("Invalid credentials", 'Invalid Username')
+        for dne, entry in search_output:
+            dn = dne
 
             if dn.find("ou=Alumni") > -1:
                 raise ValueError('Invalid credentials', 'Alumni Account')
-            rollno=entry['employeeNumber'][0]
-            employeeType=entry['employeeType'][0]
-            employeeTypeList="ug,pg,dd,rs"
-            if employeeType==None or employeeTypeList.find(employeeType) == -1:
+            rollno = entry['employeeNumber'][0]
+            employee_type = entry['employee_type'][0]
+            employee_type_list = "ug,pg,dd,rs"
+            if not employee_type or employee_type_list.find(employee_type) == -1:
                 raise ValueError('Invalid credentials', 'Not a Student Account')
-            mess_member=False
+            mess_member = False
             with open(roll_no_file, 'r') as mess_member_list:
                 for line in mess_member_list:
                     if rollno in line:
-                        mess_member=True
+                        mess_member = True
             if not mess_member:
                 raise ValueError('Invalid credentials', 'Not a Member of the Hostel Mess')
 
-            password=fieldValues[1].strip()
-            l.bind_s(dn,password)
-            login_status= 'uid='+uid in l.whoami_s()
+            password = field_values[1].strip()
+            l.bind_s(dn, password)
+            login_status = 'uid=' + uid in l.whoami_s()
 
     except ValueError as e:
         eg.msgbox(title=e.args[0], msg=e.args[1])
 
-    except ldap.LDAPError, e:
-        #print e
+    except ldap.LDAPError as e:
+        # print e
         eg.msgbox(title=e.message.get('desc'), msg='Invalid Password')
     return rollno, login_status
-#[rollno,match]= login()
-#print rollno,match
+    # [rollno,match]= login()
+    # print rollno,match

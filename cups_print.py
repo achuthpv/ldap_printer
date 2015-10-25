@@ -13,7 +13,7 @@ import cups
 import easygui as eg
 
 
-def cups_print(username, printer_name, lpfile):
+def cups_print(username, printer_name):
     conn = cups.Connection()
     filename = eg.fileopenbox("Select the file to be printed", "File Selector")
     job_id = 0
