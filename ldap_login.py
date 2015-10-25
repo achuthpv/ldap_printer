@@ -60,7 +60,7 @@ def login():
             if dn.find("ou=Alumni") > -1:
                 raise ValueError('Invalid credentials', 'Alumni Account')
             rollno = entry['employeeNumber'][0]
-            employee_type = entry['employee_type'][0]
+            employee_type = entry['employeeType'][0]
             employee_type_list = "ug,pg,dd,rs"
             if not employee_type or employee_type_list.find(employee_type) == -1:
                 raise ValueError('Invalid credentials', 'Not a Student Account')

@@ -50,7 +50,7 @@ def account(username):
     for row in rows_acc:
         try:
             users[row[col_acc['user']]] += 1
-        except (IndexError, TypeError):
+        except (IndexError, TypeError, KeyError):
             pass
 
     for key in users.keys():
