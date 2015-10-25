@@ -1,0 +1,5 @@
+client_id = 'OB2565s95qB54OoS5hOtnRcFtvenHfonPG9g0Fbq'
+redirect_uri = 'http://localhost:14396'
+BASE_URL = 'http://localhost:8000/'
+API_URL = BASE_URL + 'user/api/user/'
+OAUTH_URL = BASE_URL + 'oauth/authorize/'
