@@ -37,6 +37,8 @@ class UserFieldAPIRequest(APIRequest):
         'id',
         'username',
         'roll_number',
+        'type',
+        'is_alumni',
     ]
 
     def __init__(self, fields=None, **kwargs):
@@ -67,8 +69,11 @@ class UserFieldAPIRequest(APIRequest):
         }
         self.kwargs['params'] = query_params
         response = requests.request(**self.kwargs)
-        json_response = response.json()
         if response.ok:
-            self.oauth_user = OAuthObject(json_response)
+            try:
+                json_response = response.json()
+                self.oauth_user = OAuthObject(json_response)
+            except ValueError:
+                OAuthError(message='Unable to parse JSON', response=response)
         else:
             raise OAuthError(message='Got error while fetching user api response', response=response)
