@@ -30,15 +30,14 @@ if login_status:
     choice = selection()
     while choice != 3:
         if choice == 1:
-            jobid=cupsprint(username,printername,lpfile)
+            jobid = cupsprint(username,printername,lpfile)
         if choice == 2:
             eg.msgbox(None,"Total number of pages printed = %s" % account(username))
         choice = selection()
 
     conn = cups.Connection()
     print conn.getJobs()
-    #while conn.getJobs().get(jobid, None) is not None:
-    #waiting for all the jobs of the current user to get finished
-    while conn.getJobs():
+    while conn.getJobs().get(jobid, None) is not None:
         time.sleep(1)
+    print conn.getJobs()
     eg.msgbox(None,"Total number of pages printed = %s" % account(username))
