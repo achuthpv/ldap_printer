@@ -9,7 +9,9 @@ access_token_regex = re.compile(r'access_token=([^&]*)')
 
 
 def login():
-    driver = webdriver.Firefox()
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference('network.proxy.type', 0)
+    driver = webdriver.Firefox(profile)
     sso_url = '%s?client_id=%s&response_type=token&scope=basic ldap program' % (OAUTH_URL, client_id)
     driver.get(sso_url)
 
