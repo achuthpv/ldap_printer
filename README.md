@@ -24,8 +24,11 @@ LDAP based printer
 - Install necessary dependencies by running `sudo pip install virtualenv virtualenvwrapper`
 - Add following lines to your `~/.bashrc`
   ```bash
+  
   export WORKON_HOME=~/.envs
+  
   mkdir -p $WORKON_HOME
+  
   source /usr/local/bin/virtualenvwrapper.sh
   ```
 - Create virtualenv by `mkvirtualenv ldap-printer`. Deactivate by `deactivate` and again activate by `workon ldap-printer`
