@@ -12,14 +12,16 @@ and the  Account.csv file for a certain user.
 """
 import csv
 import time
+import os
 
 
-# username = sys.argv[1]
+acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
+
+
 def account(username):
     col_log = {'printer': 0, 'user': 1, 'jid': 2, 'timestamp': 3, 'page_no': 5, 'copies': 6}
     col_acc = {'user': 0, 'pages': 1, 'timestamp': 2, 'max': 3}
-    log_file = "/var/log/cups/page_log"
-    acc_file = "account.csv"
+    log_file = '/var/log/cups/page_log'
     # MAX = 200
     printers = ['PDF']
 
@@ -33,7 +35,7 @@ def account(username):
             rows_log.append(row)
     csv_file.close()
 
-    csv_file = open(acc_file, "a+b")
+    csv_file = open(acc_file, 'a+b')
     reader = csv.reader(csv_file)
     rows_acc = []
 

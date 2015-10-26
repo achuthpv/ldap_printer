@@ -13,31 +13,39 @@ when desired.
 """
 import cups
 import time
+import sys
 
 import easygui as eg
 
 from oauth.sso_login import login
-from account import account
-from cups_print import selection
-from cups_print import cups_print
+from print_pkg.account import account
+from print_pkg.cups_print import selection
+from print_pkg.cups_print import cups_print
+from oauth.exceptions import OAuthError
+from utils.colors import RED, GREEN, NATIVE
 
 lp_file = "lp"
 printer_name = "PDF"
-username, login_status = login()
+try:
+    username, login_status = login()
+except (OAuthError, ValueError) as err:
+    msg = 'Unable to Authenticate. \nError: %s\n' % err.message
+    sys.stderr.write(RED + msg + NATIVE)
+    sys.exit()
+
+sys.stdout.write(GREEN + 'Authentication Successful' + NATIVE)
 
 if login_status:
     choice = selection()
     while choice != 3:
         if choice == 1:
-            jobid = cups_print(username, printer_name)
+            job_id = cups_print(username, printer_name)
         if choice == 2:
             eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
         choice = selection()
 
     conn = cups.Connection()
-    # while conn.getJobs().get(jobid, None) is not None:
-    # waiting for all the jobs of the current user to get finished
-    while conn.getJobs():
+    while conn.getJobs(my_jobs=True):
         time.sleep(1)
     eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
 

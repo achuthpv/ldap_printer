@@ -18,20 +18,12 @@ def cups_print(username, printer_name):
     filename = eg.fileopenbox("Select the file to be printed", "File Selector")
     job_id = 0
     if filename:
-
-        # printer_returns = conn.getPrinters()
         cups.setUser(username)
-        # for printer in printer_returns:
-        #    print printer_returns.keys()[1]
-
-        # commandline=lpfile+" -U "+username+" -d "+printer_name+"  "+filename
-        # os.system(commandline)
         options = {'sides': 'two-sided-long-edge'}
         try:
             job_id = conn.printFile(printer_name, filename, filename, options)
         except cups.IPPError as (status, description):
             eg.msgbox(title='IPP status is %d' % status, msg='Meaning: %s' % description)
-            # account(username)
     return job_id
 
 
