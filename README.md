@@ -25,6 +25,7 @@ LDAP based printer
 - **Ignore these steps if you're familiar with virtualenv**
 - Install necessary dependencies by running `sudo pip install virtualenv virtualenvwrapper`
 - Add following lines to your `~/.bashrc`
+
   ```bash
   
   export WORKON_HOME=~/.envs
