@@ -7,8 +7,10 @@ from server.bottle_server import start_server, stop_server
 import os
 from .exceptions import InvalidLoginError
 import sys
+from uuid import uuid4
 
 access_token_regex = re.compile(r'access_token=([^&]*)')
+state_regex = re.compile(r'state=([^&]*)')
 
 roll_no_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/roll_no_list.txt'))
 
@@ -21,7 +23,10 @@ def login():
     profile.set_preference('network.proxy.type', 0)
     driver = webdriver.Firefox(profile)
     sys.stdout.write('SSO Login protocol loaded\n')
-    sso_url = '%s?client_id=%s&response_type=token&scope=basic profile ldap program' % (OAUTH_URL, client_id)
+
+    request_state = uuid4().hex
+    sso_url = '%s?client_id=%s&response_type=token&scope=basic profile ldap program&state=%s' % (
+        OAUTH_URL, client_id, request_state)
     driver.get(sso_url)
 
     while True:
@@ -34,6 +39,15 @@ def login():
     driver.close()
     stop_server()
     sys.stdout.write('Login Sequence Finished\n\n')
+
+    # Validate State
+    state = state_regex.findall(current_url)
+    if len(state) == 0:
+        return None, False
+    state = state[0]
+    if state != request_state:
+        return None, False
+
     access_token = access_token_regex.findall(current_url)
     if len(access_token) == 0:
         return None, False

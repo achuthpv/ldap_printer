@@ -18,6 +18,7 @@ LDAP based printer
   ```bash
   sudo apt-get install python-dev python-pip libcups2-dev
   ```
+
 ### virtualenv configuration
 - **Ignore these steps if you're familiar with virtualenv**
 - Install necessary dependencies by running `sudo pip install virtualenv virtualenvwrapper`
