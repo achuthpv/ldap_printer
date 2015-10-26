@@ -5,6 +5,7 @@ LDAP based printer
 - Make sure you have sudo permissions and python 2 installed. This project is written only for linux based OS
 - Make sure firefox is installed in system and can be triggered using `firefox` command
 - Install dependencies
+- 
   ```bash
   sudo apt-get install python-dev python-pip libcups2-dev
   ```
