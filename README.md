@@ -5,7 +5,7 @@ LDAP based printer
 - Make sure you have sudo permissions and python 2 installed. This project is written only for linux based OS
 - Make sure firefox is installed in system and can be triggered using `firefox` command
 - Install dependencies
-- 
+
   ```bash
   sudo apt-get install python-dev python-pip libcups2-dev
   ```
@@ -16,7 +16,7 @@ LDAP based printer
 
 ## Development
 - Install python development kit by 
-- 
+
   ```bash
      sudo apt-get install python-dev python-pip libcups2-dev
   ```
@@ -29,9 +29,7 @@ LDAP based printer
   ```bash
   
   export WORKON_HOME=~/.envs
-  
   mkdir -p $WORKON_HOME
-  
   source /usr/local/bin/virtualenvwrapper.sh
   ```
 - Create virtualenv by `mkvirtualenv ldap-printer`. Deactivate by `deactivate` and again activate by `workon ldap-printer`
