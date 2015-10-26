@@ -60,4 +60,8 @@ target/
 
 # PyCharm
 .idea/
+
+# Custom
+generated_wrapper.cpp
+
 # Created by .ignore support plugin (hsz.mobi)

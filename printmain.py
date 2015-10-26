@@ -23,17 +23,21 @@ from print_pkg.cups_print import selection
 from print_pkg.cups_print import cups_print
 from oauth.exceptions import OAuthError
 from utils.colors import RED, GREEN, NATIVE
+from socket import error as socket_error
+
 
 lp_file = "lp"
 printer_name = "PDF"
 try:
     username, login_status = login()
-except (OAuthError, ValueError) as err:
+except (OAuthError, ValueError, socket_error) as err:
     msg = 'Unable to Authenticate. \nError: %s\n' % err.message
     sys.stderr.write(RED + msg + NATIVE)
+    sys.stderr.flush()
     sys.exit()
 
-sys.stdout.write(GREEN + 'Authentication Successful' + NATIVE)
+sys.stdout.write(GREEN + 'Authentication Successful\n' + NATIVE)
+sys.stdout.flush()
 
 if login_status:
     choice = selection()
@@ -51,3 +55,5 @@ if login_status:
 
 else:
     print 'Login failed. Please try again later'
+
+sys.exit()
