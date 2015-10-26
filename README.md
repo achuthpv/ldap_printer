@@ -15,6 +15,7 @@ LDAP based printer
 
 ## Development
 - Install python development kit by 
+- 
   ```bash
      sudo apt-get install python-dev python-pip libcups2-dev
   ```
