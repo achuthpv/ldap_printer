@@ -14,7 +14,7 @@ when desired.
 import cups
 import time
 import sys
-
+import ConfigParser
 import easygui as eg
 
 from oauth.sso_login import login
@@ -25,9 +25,10 @@ from oauth.exceptions import OAuthError
 from utils.colors import RED, GREEN, NATIVE
 from socket import error as socket_error
 
-
-lp_file = "lp"
-printer_name = "PDF"
+config = ConfigParser.ConfigParser()
+config.read("config/printer.cfg")
+lp_file = config.get('printer','lpfile')
+printer_name = config.get('printer','name')
 try:
     username, login_status = login()
 except (OAuthError, ValueError, socket_error) as err:
