@@ -18,7 +18,7 @@ import ConfigParser
 def get_abs_path(filename):
     return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
 config = ConfigParser.ConfigParser()
-config.read(get_abs_path("config/printer.cfg"))
+config.read(get_abs_path("../config/printer.cfg"))
 printer_name = config.get('printer','name')
 
 acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
