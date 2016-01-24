@@ -16,6 +16,7 @@ import time
 import sys
 import ConfigParser
 import easygui as eg
+import os
 
 from oauth.sso_login import login
 from print_pkg.account import account
@@ -25,8 +26,10 @@ from oauth.exceptions import OAuthError
 from utils.colors import RED, GREEN, NATIVE
 from socket import error as socket_error
 
+def get_abs_path(filename):
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
 config = ConfigParser.ConfigParser()
-config.read("config/printer.cfg")
+config.read(get_abs_path("config/printer.cfg"))
 lp_file = config.get('printer','lpfile')
 printer_name = config.get('printer','name')
 try:
