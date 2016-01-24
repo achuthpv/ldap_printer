@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DEST="/usr/local/ldap_printer"
 
 sudo apt-get update
-sudo apt-get install python-dev python-pip libcups2-dev cups libcups2 firefox
+sudo apt-get install python-dev python-pip libcups2-dev cups libcups2 firefox python-tk
 
 sudo rm -rf ${DEST}
 
