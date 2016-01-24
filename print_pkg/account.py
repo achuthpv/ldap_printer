@@ -13,7 +13,13 @@ and the  Account.csv file for a certain user.
 import csv
 import time
 import os
+import ConfigParser
 
+def get_abs_path(filename):
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
+config = ConfigParser.ConfigParser()
+config.read(get_abs_path("config/printer.cfg"))
+printer_name = config.get('printer','name')
 
 acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
 
@@ -23,7 +29,7 @@ def account(username):
     col_acc = {'user': 0, 'pages': 1, 'timestamp': 2, 'max': 3}
     log_file = '/var/log/cups/page_log'
     # MAX = 200
-    printers = ['PDF']
+    printers = [printer_name]
 
     csv_file = open(log_file, 'rb')
     csv_file.seek(0)
