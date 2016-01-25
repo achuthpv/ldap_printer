@@ -20,14 +20,13 @@ def get_abs_path(filename):
 config = ConfigParser.ConfigParser()
 config.read(get_abs_path("../config/printer.cfg"))
 printer_name = config.get('printer','name')
-
+log_file = config.get('printer','logfile')
 acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
 
 
 def account(username):
     col_log = {'printer': 0, 'user': 1, 'jid': 2, 'timestamp': 3, 'page_no': 5, 'copies': 6}
     col_acc = {'user': 0, 'pages': 1, 'timestamp': 2, 'max': 3}
-    log_file = '/var/log/cups/page_log'
     # MAX = 200
     printers = [printer_name]
 
