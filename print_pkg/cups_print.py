@@ -16,10 +16,19 @@ import easygui as eg
 def cups_print(username, printer_name):
     conn = cups.Connection()
     filename = eg.fileopenbox("Select the file to be printed", "File Selector")
+    title = "Filename : " + filename
+    msg = "empty - print all pages, '-' for range, ',' separate ranges)"
+    fieldNames = ["Pages to be printed"]
+    fieldValues = []  # we start with blanks for the values
+    fieldValues = eg.multenterbox(msg, title, fieldNames, fieldValues)
     job_id = 0
     if filename:
         cups.setUser(username)
         options = {'sides': 'two-sided-long-edge'}
+        val=str(fieldValues[0]).replace(" ","").strip(',')
+        if bool(val):
+            options['page-ranges'] = val
+
         try:
             job_id = conn.printFile(printer_name, filename, filename, options)
         except cups.IPPError as (status, description):
