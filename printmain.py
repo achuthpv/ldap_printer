@@ -26,6 +26,7 @@ from oauth.exceptions import OAuthError
 from utils.colors import RED, GREEN, NATIVE
 from socket import error as socket_error
 
+
 def get_abs_path(filename):
     return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
 config = ConfigParser.ConfigParser()
@@ -52,8 +53,8 @@ if login_status:
             eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
         choice = selection()
 
-    conn = cups.Connection()
-    eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
+    #conn = cups.Connection()
+    #eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
 
 else:
     print 'Login failed. Please try again later'
