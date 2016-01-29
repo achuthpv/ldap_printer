@@ -51,7 +51,6 @@ if login_status:
     conn = cups.Connection()
     while conn.getJobs(my_jobs=True):
         time.sleep(1)
-    eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
 
 else:
     print 'Login failed. Please try again later'
