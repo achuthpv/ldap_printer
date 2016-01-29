@@ -14,8 +14,9 @@ when desired.
 import cups
 import time
 import sys
-
+import ConfigParser
 import easygui as eg
+import os
 
 from oauth.sso_login import login
 from print_pkg.account import account
@@ -26,8 +27,12 @@ from utils.colors import RED, GREEN, NATIVE
 from socket import error as socket_error
 
 
-lp_file = "lp"
-printer_name = "PDF"
+def get_abs_path(filename):
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
+config = ConfigParser.ConfigParser()
+config.read(get_abs_path("config/printer.cfg"))
+lp_file = config.get('printer','lpfile')
+printer_name = config.get('printer','name')
 try:
     username, login_status = login()
 except (OAuthError, ValueError, socket_error) as err:
@@ -47,10 +52,6 @@ if login_status:
         if choice == 2:
             eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
         choice = selection()
-
-    conn = cups.Connection()
-    while conn.getJobs(my_jobs=True):
-        time.sleep(1)
 
 else:
     print 'Login failed. Please try again later'

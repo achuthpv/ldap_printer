@@ -14,18 +14,26 @@ import csv
 import gzip
 import time
 import os
+import ConfigParser
 
 
+def get_abs_path(filename):
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
+
+
+config = ConfigParser.ConfigParser()
+config.read(get_abs_path("../config/printer.cfg"))
+printer_name = config.get('printer', 'name')
+log_file_dir = config.get('printer', 'logfile_dir')
+log_file_name = config.get('printer', 'logflie')
 acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
-log_file_dir = '/var/log/cups'
-log_file_name = 'page_log'
 
 
 def account(username='dummy', custom_acc_file=acc_file):
     col_log = {'printer': 0, 'user': 1, 'jid': 2, 'timestamp': 3, 'page_no': 5, 'copies': 6}
     col_acc = {'user': 0, 'pages': 1, 'timestamp': 2, 'max': 3}
     # MAX = 200
-    printers = ['PDF']
+    printers = [printer_name]
     rows_log = []
 
     log_files = [filename for filename in os.listdir(log_file_dir) if filename.startswith(log_file_name)]
