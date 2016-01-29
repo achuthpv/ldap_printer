@@ -11,8 +11,12 @@ LDAP based printer
   ```
 - Install python dependencies by running `sudo pip install -r requirements.txt`
 - Run installation script as `bash install.sh` or `./install.sh`
+- Add `/usr/local/ldap_printer` in `/etc/sudoers` secure path.
 - Delete this directory
 
+## Usage
+- To print a file run command `ldap_print`
+- To get account information of all users run `sudo rootaccount.py`. You need to be a sudo user.
 
 ## Development
 - Install python development kit by 
@@ -27,7 +31,7 @@ LDAP based printer
 - Add following lines to your `~/.bashrc`
 
   ```bash
-  
+    
   export WORKON_HOME=~/.envs
   mkdir -p $WORKON_HOME
   source /usr/local/bin/virtualenvwrapper.sh

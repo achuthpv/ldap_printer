@@ -26,6 +26,7 @@ sudo find ${DEST} -type d -exec chmod 755 {} \;
 sudo find ${DEST} -type f -exec chmod 600 {} \;
 sudo chmod 755 ${DEST}
 sudo chmod 4711 ${DEST}/ldap_print
+sudo chmod 711 ${DEST}/rootaccount.py
 
 #installing required dependecies
 sudo pip install -r ${DEST}/requirements.txt

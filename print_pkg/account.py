@@ -25,7 +25,7 @@ config = ConfigParser.ConfigParser()
 config.read(get_abs_path("../config/printer.cfg"))
 printer_name = config.get('printer', 'name')
 log_file_dir = config.get('printer', 'logfile_dir')
-log_file_name = config.get('printer', 'logflie')
+log_file_name = config.get('printer', 'logfile')
 acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
 
 

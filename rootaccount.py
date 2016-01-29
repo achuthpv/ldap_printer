@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 from print_pkg.account import account
 import sys
 

@@ -11,8 +11,6 @@ All the other necessary functions are imported to this script and are called
 when desired.
 
 """
-import cups
-import time
 import sys
 import ConfigParser
 import easygui as eg
@@ -31,8 +29,7 @@ def get_abs_path(filename):
     return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
 config = ConfigParser.ConfigParser()
 config.read(get_abs_path("config/printer.cfg"))
-lp_file = config.get('printer','lpfile')
-printer_name = config.get('printer','name')
+printer_name = config.get('printer', 'name')
 try:
     username, login_status = login()
 except (OAuthError, ValueError, socket_error) as err:
