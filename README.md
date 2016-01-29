@@ -4,6 +4,7 @@ LDAP based printer
 ## Installation
 - Make sure you have sudo permissions and python 2 installed. This project is written only for linux based OS
 - Make sure firefox is installed in system and can be triggered using `firefox` command
+- Make sure your internet connection is ready before installation starts
 - Install dependencies
 
   ```bash
