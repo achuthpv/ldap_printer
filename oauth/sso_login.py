@@ -1,6 +1,8 @@
 from selenium import webdriver
 from credentials import client_id, redirect_uri, OAUTH_URL
 import re
+
+from utils import PROJECT_ROOT
 from .request import UserFieldAPIRequest
 from selenium.common.exceptions import WebDriverException
 from server.bottle_server import start_server, stop_server
@@ -12,10 +14,15 @@ from uuid import uuid4
 access_token_regex = re.compile(r'access_token=([^&]*)')
 state_regex = re.compile(r'state=([^&]*)')
 
-roll_no_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/roll_no_list.txt'))
+roll_no_file = os.path.join(PROJECT_ROOT, './data/roll_no_list.txt')
 
 
 def login():
+
+    # Validate if roll_no_file is present
+    if os.path.exists(roll_no_file):
+        raise ValueError('Invalid configuration. Contact system administrator')
+
     sys.stdout.write('Initializing Login Sequence...\n')
     start_server()
     sys.stdout.write('Loading SSO Login protocol...\n')
@@ -63,6 +70,7 @@ def login():
         raise InvalidLoginError(title='Invalid Credentials', message='Alumni Account')
     if type_ not in ['ug', 'pg', 'dd', 'rs']:
         raise InvalidLoginError(title='Invalid Credentials', message='Not a Student Account')
+
     mess_member = False
     with open(roll_no_file, 'r') as mess_member_list:
         for line in mess_member_list:

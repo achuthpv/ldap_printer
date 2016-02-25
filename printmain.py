@@ -21,15 +21,15 @@ from print_pkg.account import account
 from print_pkg.cups_print import selection
 from print_pkg.cups_print import cups_print
 from oauth.exceptions import OAuthError
+from utils import PROJECT_ROOT
 from utils.colors import RED, GREEN, NATIVE
 from socket import error as socket_error
 
 
-def get_abs_path(filename):
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
 config = ConfigParser.ConfigParser()
-config.read(get_abs_path("config/printer.cfg"))
+config.read(os.path.join(PROJECT_ROOT, "config/printer.cfg"))
 printer_name = config.get('printer', 'name')
+
 try:
     username, login_status = login()
 except (OAuthError, ValueError, socket_error) as err:
@@ -47,7 +47,8 @@ if login_status:
         if choice == 1:
             job_id = cups_print(username, printer_name)
         if choice == 2:
-            eg.msgbox('Total number of pages printed in current month = %s' % account(username), 'Total Printed Pages')
+            total_pages, _, _ = account(username)
+            eg.msgbox('Total number of pages printed in current month = %s' % total_pages, 'Total Printed Pages')
         choice = selection()
 
 else:

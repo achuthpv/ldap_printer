@@ -15,17 +15,14 @@ import ConfigParser
 import datetime
 from collections import defaultdict
 
-
-def get_abs_path(filename):
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), filename))
-
+from utils import PROJECT_ROOT
 
 config = ConfigParser.ConfigParser()
-config.read(get_abs_path("../config/printer.cfg"))
+config.read(os.path.join(PROJECT_ROOT, './config/printer.cfg'))
 printer_name = config.get('printer', 'name')
 log_file_dir = config.get('printer', 'logfile_dir')
 log_file_name = config.get('printer', 'logfile')
-acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
+acc_file = os.path.join(PROJECT_ROOT, './data/account.csv')
 
 
 def account(username='dummy', custom_acc_file=acc_file, verbose=False, month=None):
@@ -97,14 +94,15 @@ def account(username='dummy', custom_acc_file=acc_file, verbose=False, month=Non
             for row in compact_info:
                 writer.writerow(row)
 
-    if verbose:
-        dir_, filename = os.path.split(custom_acc_file)
-        verbose_filename = os.path.join(dir_, 'verbose_' + filename)
+    # Generate verbose detail if required
+    dir_, filename = os.path.split(custom_acc_file)
+    verbose_filename = os.path.join(dir_, 'verbose_' + filename)
 
+    if verbose:
         with open(verbose_filename, 'wb') as csv_file:
             writer = csv.writer(csv_file)
 
             for row in verbose_info:
                 writer.writerow(row)
 
-    return user_total_pages
+    return user_total_pages, custom_acc_file, verbose_filename

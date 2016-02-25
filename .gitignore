@@ -69,3 +69,6 @@ generated_wrapper.cpp
 # Custom
 printer_account.csv
 verbose_printer_account.csv
+data/*
+
+!.gitkeep

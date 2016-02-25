@@ -4,6 +4,7 @@ LDAP based printer
 ## Installation
 - Make sure you have sudo permissions and python 2 installed. This project is written only for linux based OS
 - Make sure firefox is installed in system and can be triggered using `firefox` command
+- Make sure your internet connection is ready before installation starts
 - Install dependencies
 
   ```bash
@@ -15,13 +16,15 @@ LDAP based printer
 - Delete this directory
 
 ## Usage
+- Add the list of roll numbers who are enlisted in the hostel mess to data/roll\_no\_list.txt
 - To print a file run command `ldap_print`
-- To get account information of all users run `sudo rootaccount.py`. You need to be a sudo user.
-  - Pass first argument as filename. If it is not present then filename 'printer_account.csv' will be used.
+- To get account information of all users run `sudo rootaccount.py`. You need to be a sudo user. 
+You will find the resultant file in `data/printer\_account.csv`.
+  - Pass first argument as filename. If it is not present then filename `printer_account.csv` will be used.
   - Pass second argument as month for which you want accounting info. This should be integer. By default it is 
   current month
-  - It generates two files filename and verbose_filename. filename has compact data i.e. total prints per user. 
-  vebose_filename has details of all individual print events.
+  - It generates two files `filename` and `verbose_filename`. `filename` has compact data i.e. total prints per user. 
+  `verbose_filename` has details of all individual print events.
 
 ## Development
 - Install python development kit by 

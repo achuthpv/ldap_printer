@@ -42,4 +42,4 @@ sudo touch /etc/profile.d/ldap_printer.sh # Adding to PATH
 echo "export PATH=${DEST}:\${PATH}" | sudo tee /etc/profile.d/ldap_printer.sh > /dev/null
 source /etc/profile
 
-echo "Installtion Completed"
+echo "Installation Completed"
