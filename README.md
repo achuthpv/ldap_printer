@@ -17,6 +17,11 @@ LDAP based printer
 ## Usage
 - To print a file run command `ldap_print`
 - To get account information of all users run `sudo rootaccount.py`. You need to be a sudo user.
+  - Pass first argument as filename. If it is not present then filename 'printer_account.csv' will be used.
+  - Pass second argument as month for which you want accounting info. This should be integer. By default it is 
+  current month
+  - It generates two files filename and verbose_filename. filename has compact data i.e. total prints per user. 
+  vebose_filename has details of all individual print events.
 
 ## Development
 - Install python development kit by 

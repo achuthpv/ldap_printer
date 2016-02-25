@@ -1,20 +1,19 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 """
-
-I got the script from Sushant Mahajan of CSE Department
-edited by: Achuth PV
+Original Author: Sushant Mahajan, CSE IITB
 
 This script takes care of logging the print logs present in cups page_log file
 to Account.csv. Logging is done based on the time stamp difference in the page_log file
 and the  Account.csv file for a certain user.
-
 """
 import csv
 import gzip
 import time
 import os
 import ConfigParser
+import datetime
+from collections import defaultdict
 
 
 def get_abs_path(filename):
@@ -29,13 +28,14 @@ log_file_name = config.get('printer', 'logfile')
 acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/account.csv'))
 
 
-def account(username='dummy', custom_acc_file=acc_file):
+def account(username='dummy', custom_acc_file=acc_file, verbose=False, month=None):
     col_log = {'printer': 0, 'user': 1, 'jid': 2, 'timestamp': 3, 'page_no': 5, 'copies': 6}
     col_acc = {'user': 0, 'pages': 1, 'timestamp': 2, 'max': 3}
     # MAX = 200
     printers = [printer_name]
     rows_log = []
 
+    # Get all log files including gzip ones
     log_files = [filename for filename in os.listdir(log_file_dir) if filename.startswith(log_file_name)]
 
     for relative_log_file in log_files:
@@ -55,58 +55,56 @@ def account(username='dummy', custom_acc_file=acc_file):
 
         csv_file.close()
 
-    # Write into account file
-    csv_file = open(custom_acc_file, 'a+b')
-    reader = csv.reader(csv_file)
-    rows_acc = []
+    users = defaultdict(list)
 
-    for row in reader:
-        rows_acc.append(row)
-
-    csv_file.close()
-
-    # add new people
-
-    # Get Users list in rows_log (from page_log)
-    users = {}
-    for row in rows_log:
-        users[row[col_log['user']]] = 0
-
-    # Get users in current account.csv
-    for row in rows_acc:
-        try:
-            users[row[col_acc['user']]] += 1
-        except (IndexError, TypeError, KeyError):
-            pass
-
-    for key in users.keys():
-        if users[key] == 0:
-            rows_acc.append([key, 0, 1])  # name,pages,timestamp
-
-    # compare and update
     pattern = '%d/%b/%Y:%H:%M:%S'
-    for rowa in rows_acc:
-        user = rowa[col_acc['user']]
-        latest = (rowa[col_acc['timestamp']] == 1) and 1 or time.mktime(
-            time.strptime(rowa[col_acc['timestamp']], pattern))
-        valid_rows = filter(lambda x: x[col_log['user']] == user and (
-            latest == 1 or latest < time.mktime(time.strptime(x[col_log['timestamp']], pattern))), rows_log)
-        if len(valid_rows) > 0:
-            rowa[col_acc['timestamp']] = valid_rows[-1][col_log['timestamp']]
-            prints = sum(map(lambda y: int(y[col_log['copies']]), valid_rows))
-            rowa[col_acc['pages']] = int(rowa[col_acc['pages']]) + prints
-    # warn
-    row = filter(lambda x: x[col_acc['user']] == username, rows_acc)
+    if not month:
+        month = datetime.datetime.now().month
 
-    if len(row) == 0:
-        total_pages = 0
-    else:
-        total_pages = row[0][col_acc['pages']]
+    for row in rows_log:
+        recorded_timestamp = row[col_log['timestamp']]
+        py_time = time.strptime(recorded_timestamp, pattern)
+        log_month = py_time.tm_mon
+        if month == log_month:
+            prints = row[col_log['copies']]  # type: str
+            if not prints.isdigit():
+                continue
+            prints = int(prints)
+            username = row[col_log['user']]
+            users[username].append([prints, recorded_timestamp])
+
+    compact_info = []
+    verbose_info = []
+    user_total_pages = 0
+
+    for user, acc_list in users.items():
+        total_prints = 0
+        for acc in acc_list:
+            total_prints += acc[0]
+            if verbose:
+                verbose_info.append([user, acc[0], acc[1]])
+
+        if user == username:
+            user_total_pages = total_prints
+
+        last_timestamp = acc_list[-1][1]
+        compact_info.append([user, total_prints, last_timestamp])
 
     # update account file
-    csv_file = open(custom_acc_file, "wb")
-    writer = csv.writer(csv_file)
-    for row in rows_acc:
-        writer.writerow(row)
-    csv_file.close()
-    return total_pages
+    with open(custom_acc_file, 'wb') as csv_file:
+            writer = csv.writer(csv_file)
+
+            for row in compact_info:
+                writer.writerow(row)
+
+    if verbose:
+        dir, filename = os.path.split(custom_acc_file)
+        verbose_filename = os.path.join(dir, 'verbose_' + filename)
+
+        with open(verbose_filename, 'wb') as csv_file:
+            writer = csv.writer(csv_file)
+
+            for row in verbose_info:
+                writer.writerow(row)
+
+    return user_total_pages

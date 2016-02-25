@@ -65,3 +65,7 @@ target/
 generated_wrapper.cpp
 
 # Created by .ignore support plugin (hsz.mobi)
+
+# Custom
+printer_account.csv
+verbose_printer_account.csv

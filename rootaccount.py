@@ -10,7 +10,16 @@ def main():
         filename = 'printer_account.csv'
     else:
         filename = sys.argv[1]
-    account(custom_acc_file=filename)
+
+    month = None
+
+    if args > 2:
+        try:
+            month = int(sys.argv[2])
+        except ValueError:
+            raise ValueError("2nd argument should be an integer which represents month")
+
+    account(custom_acc_file=filename, verbose=True, month=month)
 
 
 if __name__ == '__main__':
