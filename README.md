@@ -20,11 +20,14 @@ LDAP based printer
 - To print a file run command `ldap_print`
 - To get account information of all users run `sudo rootaccount.py`. You need to be a sudo user. 
 You will find the resultant file in `data/printer\_account.csv`.
-  - Pass first argument as filename. If it is not present then filename `printer_account.csv` will be used.
-  - Pass second argument as month for which you want accounting info. This should be integer. By default it is 
-  current month
-  - It generates two files `filename` and `verbose_filename`. `filename` has compact data i.e. total prints per user. 
+    - Pass first argument as filename. If it is not present then filename `printer_account.csv` will be used.
+    - Pass second argument as month for which you want accounting info. This should be integer. By default it is 
+    current month
+    - It generates two files `filename` and `verbose_filename`. `filename` has compact data i.e. total prints per user. 
   `verbose_filename` has details of all individual print events.
+
+- Configure cups log-rotate rotation and deletion period for appropriate timespan. We recomment rotation period as 1 
+month and deletion period 3-4 months. Learn how to do it using Google ;-)
 
 ## Development
 - Install python development kit by 

@@ -38,10 +38,10 @@ except (OAuthError, ValueError, socket_error) as err:
     sys.stderr.flush()
     sys.exit()
 
-sys.stdout.write(GREEN + 'Authentication Successful\n' + NATIVE)
-sys.stdout.flush()
-
 if login_status:
+    sys.stdout.write(GREEN + 'Authentication Successful\n' + NATIVE)
+    sys.stdout.flush()
+
     choice = selection()
     while choice != 3:
         if choice == 1:
@@ -52,6 +52,6 @@ if login_status:
         choice = selection()
 
 else:
-    print 'Login failed. Please try again later'
+    print('Login failed. Please try again later')
 
 sys.exit()

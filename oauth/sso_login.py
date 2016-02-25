@@ -20,7 +20,7 @@ roll_no_file = os.path.join(PROJECT_ROOT, './data/roll_no_list.txt')
 def login():
 
     # Validate if roll_no_file is present
-    if os.path.exists(roll_no_file):
+    if not os.path.isfile(roll_no_file):
         raise ValueError('Invalid configuration. Contact system administrator')
 
     sys.stdout.write('Initializing Login Sequence...\n')
