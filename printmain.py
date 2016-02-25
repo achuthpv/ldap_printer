@@ -47,7 +47,7 @@ if login_status:
         if choice == 1:
             job_id = cups_print(username, printer_name)
         if choice == 2:
-            eg.msgbox('Total number of pages printed = %s' % account(username), 'Total Printed Pages')
+            eg.msgbox('Total number of pages printed in current month = %s' % account(username), 'Total Printed Pages')
         choice = selection()
 
 else:

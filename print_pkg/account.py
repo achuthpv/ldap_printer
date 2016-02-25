@@ -30,7 +30,7 @@ acc_file = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/acco
 
 def account(username='dummy', custom_acc_file=acc_file, verbose=False, month=None):
     col_log = {'printer': 0, 'user': 1, 'jid': 2, 'timestamp': 3, 'page_no': 5, 'copies': 6}
-    col_acc = {'user': 0, 'pages': 1, 'timestamp': 2, 'max': 3}
+
     # MAX = 200
     printers = [printer_name]
     rows_log = []
@@ -70,8 +70,8 @@ def account(username='dummy', custom_acc_file=acc_file, verbose=False, month=Non
             if not prints.isdigit():
                 continue
             prints = int(prints)
-            username = row[col_log['user']]
-            users[username].append([prints, recorded_timestamp])
+            log_user = row[col_log['user']]
+            users[log_user].append([prints, recorded_timestamp])
 
     compact_info = []
     verbose_info = []
@@ -98,8 +98,8 @@ def account(username='dummy', custom_acc_file=acc_file, verbose=False, month=Non
                 writer.writerow(row)
 
     if verbose:
-        dir, filename = os.path.split(custom_acc_file)
-        verbose_filename = os.path.join(dir, 'verbose_' + filename)
+        dir_, filename = os.path.split(custom_acc_file)
+        verbose_filename = os.path.join(dir_, 'verbose_' + filename)
 
         with open(verbose_filename, 'wb') as csv_file:
             writer = csv.writer(csv_file)
