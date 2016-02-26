@@ -32,6 +32,7 @@ def cups_print(username, printer_name):
             options['page-ranges'] = val
 
         try:
+            conn.setPrinterUsersAllowed(printer_name, [username])
             job_id = conn.printFile(printer_name, filename, filename, options)
         except cups.IPPError as (status, description):
             eg.msgbox(title='IPP status is %d' % status, msg='Meaning: %s' % description)
