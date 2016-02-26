@@ -29,13 +29,12 @@ You will find the resultant file in `data/printer\_account.csv`.
 - Configure cups log-rotate rotation and deletion period for appropriate timespan. We recomment rotation period as 1 
 month and deletion period 3-4 months. Learn how to do it using Google ;-)
 - To prevent the local accounts from unauthorised use of the printer from browsers or pdf reader, do the following
-    - Disable guest account in the machine https://help.ubuntu.com/stable/ubuntu-help/shell-guest-session.html
     - To add the local accounts in the blacklist for the printer, do the following
       - Type system-config-printer on terminal and press Enter
       - Right click your desired printer and select properties
           - Select Access Control
-          - Select Allow printing for everyone, except these users option
-          - Add the local account usernames here and click apply
+          - Select Deny printing for everyone, except these users option
+          - Add root as username here and click apply
   
         
 
