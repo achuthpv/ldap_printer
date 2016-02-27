@@ -34,7 +34,7 @@ def cups_print(username, printer_name):
         try:
             conn.setPrinterUsersAllowed(printer_name, [username])
             job_id = conn.printFile(printer_name, filename, filename, options)
-            conn.setPrinterUsersAllowed(printer_name, ['root'])
+            conn.setPrinterUsersAllowed(printer_name, [''])
         except cups.IPPError as (status, description):
             eg.msgbox(title='IPP status is %d' % status, msg='Meaning: %s' % description)
     return job_id
