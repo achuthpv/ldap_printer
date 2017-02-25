@@ -14,7 +14,16 @@ LDAP based printer
 - Run installation script as `bash install.sh` or `./install.sh`
 - Add `/usr/local/ldap_printer` in `/etc/sudoers` secure path.
 - Delete this directory
-- If an error is thrown regarding missing *geckodriver*, please install it from https://github.com/mozilla/geckodriver.
+- If an error is thrown regarding missing *geckodriver*, please install it from https://github.com/mozilla/geckodriver/releases.
+The following example is for linux 32 - bit installation. Depending upon your OS, download and install the respective geckodriver.
+
+```bash
+wget https://github.com/mozilla/geckodriver/releases/download/v0.14.0/geckodriver-v0.14.0-linux32.tar.gz
+tar -xvzf geckodriver-v0.14.0-linux32.tar.gz
+rm geckodriver-v0.14.0-linux32.tar.gz
+chmod +x geckodriver
+sudo cp geckodriver /usr/local/bin/
+```
 
 ## Usage
 - Add the list of roll numbers who are enlisted in the hostel mess to data/roll\_no\_list.txt
