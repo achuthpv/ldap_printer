@@ -25,6 +25,11 @@ from utils import PROJECT_ROOT
 from utils.colors import RED, GREEN, NATIVE
 from socket import error as socket_error
 
+def signal_handler(signal, frame):
+    print('You exiting')
+    sys.exit(0)
+    
+signal.signal(signal.SIGINT, signal_handler)
 
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(PROJECT_ROOT, "config/printer.cfg"))
