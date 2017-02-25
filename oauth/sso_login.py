@@ -9,7 +9,15 @@ from server.bottle_server import start_server, stop_server
 import os
 from .exceptions import InvalidLoginError
 import sys
+import signal
 from uuid import uuid4
+
+def signal_handler(signal, frame):
+    print('You are exiting')
+    stop_server()
+    sys.exit(0)
+    
+signal.signal(signal.SIGINT, signal_handler)
 
 access_token_regex = re.compile(r'access_token=([^&]*)')
 state_regex = re.compile(r'state=([^&]*)')
@@ -34,8 +42,11 @@ def login():
     request_state = uuid4().hex
     sso_url = '%s?client_id=%s&response_type=token&scope=basic profile ldap program&state=%s' % (
         OAUTH_URL, client_id, request_state)
-    driver.get(sso_url)
-
+    try:
+		driver.get(sso_url)
+    except WebDriverException:
+        pass
+	    
     while True:
         try:
             current_url = driver.current_url
