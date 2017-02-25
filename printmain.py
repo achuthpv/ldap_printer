@@ -60,5 +60,6 @@ if login_status:
 
 else:
     print('Login failed. Please try again later')
+    stop_server()
 
 sys.exit()

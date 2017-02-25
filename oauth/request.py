@@ -68,7 +68,7 @@ class UserFieldAPIRequest(APIRequest):
             'fields': fields_val
         }
         self.kwargs['params'] = query_params
-        response = requests.request(**self.kwargs)
+        response = requests.request(verify = False, **self.kwargs)
         if response.ok:
             try:
                 json_response = response.json()
