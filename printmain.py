@@ -24,9 +24,11 @@ from oauth.exceptions import OAuthError
 from utils import PROJECT_ROOT
 from utils.colors import RED, GREEN, NATIVE
 from socket import error as socket_error
+from oauth.server.bottle_server import stop_server
 
 def signal_handler(signal, frame):
-    print('You exiting')
+    print('You are exiting')
+    stop_server()
     sys.exit(0)
     
 signal.signal(signal.SIGINT, signal_handler)
