@@ -15,7 +15,7 @@ import sys
 import ConfigParser
 import easygui as eg
 import os
-
+import signal
 from oauth.sso_login import login
 from print_pkg.account import account
 from print_pkg.cups_print import selection
